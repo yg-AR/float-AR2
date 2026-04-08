@@ -8,8 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     <style>
         body { margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; background: #000; }
-        
-        /* 開始ボタン（前回のデザインを継承） */
         #start-button {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 9999; padding: 18px 36px; background: linear-gradient(135deg, #28a745, #218838);
@@ -34,46 +32,44 @@
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-       <a-entity id="t" mindar-image-target="targetIndex: 0">
-    <a-image id="ar-image-b" src="#nicole-img" 
-             width="1" height="1" 
-             position="0 0.2 0" 
-             rotation="45 0 0" 
-             visible="false"
-             material="transparent: true; alphaTest: 0.5;">
-    </a-image>
+        <a-entity id="t" mindar-image-target="targetIndex: 0">
+            <a-image class="ar-nicoles" src="#nicole-png-b" 
+                     width="1" height="1" 
+                     position="0 0.2 0" 
+                     rotation="45 0 0" 
+                     visible="false"
+                     material="transparent: true; alphaTest: 0.5;">
+            </a-image>
 
-    <a-image id="ar-image-a" src="#nicole-img" 
-             width="1" height="1" 
-             position="0 0.2 0.3" 
-             rotation="45 0 0" 
-             visible="false"
-             material="transparent: true; alphaTest: 0.5;">
-    </a-image>
-</a-entity>
+            <a-image class="ar-nicoles" src="#nicole-png-a" 
+                     width="1" height="1" 
+                     position="0 0.2 0.3" 
+                     rotation="45 0 0" 
+                     visible="false"
+                     material="transparent: true; alphaTest: 0.5;">
+            </a-image>
+        </a-entity>
     </a-scene>
 
     <script>
-        const arImageObj = document.querySelector("#ar-image");
         const startBtn = document.querySelector("#start-button");
+        const targetEl = document.querySelector('#t');
+        // クラス名で両方の画像を取得
+        const nicoleImages = document.querySelectorAll(".ar-nicoles");
 
         function startAR() {
             const sceneEl = document.querySelector('a-scene');
             const arSystem = sceneEl.systems["mindar-image-system"];
             startBtn.style.display = "none";
-            arSystem.start(); // ARエンジンの起動
+            arSystem.start();
         }
 
-        const targetEl = document.querySelector('#t');
-
-        // 認識した時：画像を表示
         targetEl.addEventListener("targetFound", () => {
-            arImageObj.setAttribute("visible", "true");
+            nicoleImages.forEach(img => img.setAttribute("visible", "true"));
         });
 
-        // 見失った時：画像を非表示
         targetEl.addEventListener("targetLost", () => {
-            arImageObj.setAttribute("visible", "false");
+            nicoleImages.forEach(img => img.setAttribute("visible", "false"));
         });
     </script>
 </body>

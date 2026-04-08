@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2.5D AR Nicole</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; background: #000; }
+        
+        /* 開始ボタン（前回のデザインを継承） */
+        #start-button {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 9999; padding: 18px 36px; background: linear-gradient(135deg, #28a745, #218838);
+            color: white; border: none; border-radius: 50px; font-family: sans-serif;
+            font-size: 18px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="start-button" onclick="startAR()">ARを開始する</button>
+
+    <a-scene 
+        mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiScanning: yes;" 
+        vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+        renderer="colorManagement: true, precision: medium">
+        
+        <a-assets>
+           <img id="nicole-png-a" src="ニコルA.png">
+           <img id="nicole-png-b" src="ニコルB.png">
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+       <a-entity id="t" mindar-image-target="targetIndex: 0">
+    <a-image id="ar-image-b" src="#nicole-img" 
+             width="1" height="1" 
+             position="0 0.2 0" 
+             rotation="45 0 0" 
+             visible="false"
+             material="transparent: true; alphaTest: 0.5;">
+    </a-image>
+
+    <a-image id="ar-image-a" src="#nicole-img" 
+             width="1" height="1" 
+             position="0 0.2 0.3" 
+             rotation="45 0 0" 
+             visible="false"
+             material="transparent: true; alphaTest: 0.5;">
+    </a-image>
+</a-entity>
+    </a-scene>
+
+    <script>
+        const arImageObj = document.querySelector("#ar-image");
+        const startBtn = document.querySelector("#start-button");
+
+        function startAR() {
+            const sceneEl = document.querySelector('a-scene');
+            const arSystem = sceneEl.systems["mindar-image-system"];
+            startBtn.style.display = "none";
+            arSystem.start(); // ARエンジンの起動
+        }
+
+        const targetEl = document.querySelector('#t');
+
+        // 認識した時：画像を表示
+        targetEl.addEventListener("targetFound", () => {
+            arImageObj.setAttribute("visible", "true");
+        });
+
+        // 見失った時：画像を非表示
+        targetEl.addEventListener("targetLost", () => {
+            arImageObj.setAttribute("visible", "false");
+        });
+    </script>
+</body>
+</html>

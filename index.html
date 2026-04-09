@@ -33,13 +33,20 @@
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity id="t" mindar-image-target="targetIndex: 0">
-            <a-image class="ar-nicoles" src="#nicole-png-b" 
-                     width="1.5" height="1.5" 
-                     position="0 0.2 0" 
-                     rotation="45 0 0" 
-                     visible="false"
-                     material="transparent: true; alphaTest: 0.5;">
-            </a-image>
+           <a-image class="ar-nicoles" src="#nicole-png-b" 
+         width="1.5" height="1.5" 
+         position="0 0.2 0" 
+         rotation="45 0 0" 
+         visible="false"
+         material="transparent: true; alphaTest: 0.5;"
+         animation="property: position; 
+                    from: 0 0.2 0; 
+                    to: 0 0.4 0; 
+                    dur: 2000; 
+                    dir: alternate; 
+                    loop: true; 
+                    easing: easeInOutSine">
+</a-image>
 
             <a-image class="ar-nicoles" src="#nicole-png-a" 
                      width="1" height="1" 
